@@ -52,7 +52,7 @@ install:
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
-  - cd %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+  - cd %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
  
 build_script:
   # Build foundation
@@ -67,20 +67,14 @@ build_script:
   - SET DSTROOT=/
   - SET PREFIX=/usr/
   - SET MSYSTEM=MINGW64
-  - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/xctest-mingw-x86_64
+  - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
-  - SET SDKROOT=c:/msys64/mingw64
+  - SET SDKROOT=
   # FIXEM: Workaround for ninja to work. We should these commands to only one command 'ninja'.
   - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
-  - mklink /d bld_co Build\Foundation\CoreFoundation
-  - mklink /d bld_found Build\Foundation\Foundation
-  - sed -e "/partials =/s#Build/Foundation/Foundation/#bld_found/#g" -e "/^build.Build.Foundation.libFoundation./{s#Build/Foundation/CoreFoundation/#bld_co/#g;s#Build/Foundation/Foundation/#bld_found/#g}" build.ninja > build_dll.ninja
-  # Test sample
-  - echo print("Hello") > tt.swift
-  - type tt.swift
-  - swift tt.swift
-  - swiftc tt.swift -v
-  - dir
+  - mklink /d BFC Build\Foundation\CoreFoundation
+  - mklink /d BFF Build\Foundation\Foundation
+  - sed -e "/partials =/s#Build/Foundation/Foundation/#BFF/#g" -e "/^build.Build.Foundation.libFoundation./{s#Build/Foundation/CoreFoundation/#BFC/#g;s#Build/Foundation/Foundation/#BFF/#g}" build.ninja > build_dll.ninja
   # 
   - ninja CompileSources CompileSwiftSources
   - find Build -name *.d | xargs rm
