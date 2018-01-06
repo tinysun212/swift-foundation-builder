@@ -75,6 +75,13 @@ build_script:
   - mklink /d bld_co Build\Foundation\CoreFoundation
   - mklink /d bld_found Build\Foundation\Foundation
   - sed -e "/partials =/s#Build/Foundation/Foundation/#bld_found/#g" -e "/^build.Build.Foundation.libFoundation./{s#Build/Foundation/CoreFoundation/#bld_co/#g;s#Build/Foundation/Foundation/#bld_found/#g}" build.ninja > build_dll.ninja
+  # Test sample
+  - echo print("Hello") > tt.swift
+  - type tt.swift
+  - swift tt.swift
+  - swiftc tt.swift -v
+  - dir
+  # 
   - ninja CompileSources CompileSwiftSources
   - find Build -name *.d | xargs rm
   - ninja -f build_dll.ninja
