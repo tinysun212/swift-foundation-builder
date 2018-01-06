@@ -39,6 +39,8 @@ install:
   - cd %WORK_DIR%/build/NinjaMinGW
   - wget -q -O llvm_lib.tar.gz https://ci.appveyor.com/api/projects/tinysun212/test-repo-1/artifacts/swift.zip
   - 7z x swift.zip
+  - cp -p swift/bin/swift.exe swift/bin/swiftc.exe
+  - cp -p swift/bin/swift.exe swift/bin/swift-autolink-extract.exe
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
