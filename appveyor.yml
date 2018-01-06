@@ -35,6 +35,13 @@ install:
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
   
+  # Download swift-clang compiler
+  #   Load llvm/clang lib
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
+  - cd %WORK_DIR%/build/NinjaMinGW/llvm
+  - wget -q -O llvm_lib.tar.gz https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/llvm_lib.tar.gz
+  - tar zxf llvm_lib.tar.gz
+ 
   # Download Swift compiler
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
   - cd %WORK_DIR%/build/NinjaMinGW
@@ -50,10 +57,10 @@ install:
 build_script:
   # Build foundation
   - cd %WORK_DIR%/swift-corelibs-foundation
-  - SET SWIFTC=/c/Work/swift_msvc/build/NinjaMinGW/swift/bin/swiftc 
-  - SET CLANG=/c/Work/swift_msvc/build/NinjaMinGW/llvm/bin/clang 
-  - SET SWIFT=/c/Work/swift_msvc/build/NinjaMinGW/swift/bin/swift 
-  - SET SDKROOT=/c/Work/swift_msvc/build/NinjaMinGW/swift 
+  - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/swift/bin/swiftc 
+  - SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
+  - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/swift/bin/swift 
+  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/swift 
   #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
   - SET BUILD_DIR=Build
   - SET DSTROOT=/
