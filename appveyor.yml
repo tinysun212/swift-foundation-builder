@@ -74,8 +74,9 @@ build_script:
   - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
   - mklink /d BFC Build\Foundation\CoreFoundation
   - mklink /d BFF Build\Foundation\Foundation
-  - sed -e "/partials =/s;Build/Foundation/Foundation/;BFF/;g" -e "/^build.Build.Foundation.libFoundation./s;Build/Foundation/CoreFoundation/;BFC/;g" build.ninja > build_dll.ninja
-  # ;s;Build/Foundation/Foundation/;BFF/;g}
+  - sed -e "/partials =/s;Build/Foundation/Foundation/;BFF/;g" 
+        -e "/build Build\/Foundation\/libFoundation./s;Build/Foundation/Foundation/;FFC/;g" build.ninja > build_dll.ninja
+  # ;s;Build/Foundation/CoreFoundation/;BFC/;g}
   - grep "partials =" build_dll.ninja
   - grep "libFoundation.a" build_dll.ninja
   # 
