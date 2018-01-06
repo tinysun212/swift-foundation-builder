@@ -1,0 +1,82 @@
+version: 1.0.{build}
+
+environment:
+  matrix:
+  - COMPILER: gcc
+    PLATFORM: mingw64
+
+install:
+  # Set Environment
+  - 'echo End intall at: & time /t'
+  - SET PATH_ORIGINAL=%PATH%
+  - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
+  - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
+  - SET MINGW64_DIR=c:/msys64/mingw64
+  - SET WORK_DIR=c:/projects/swift
+  - cd %WORK_DIR%
+  - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/swift/bin 
+ 
+  # Install packages
+  - pacman -S --noconfirm mingw-w64-x86_64-cmake
+  - pacman -S --noconfirm mingw-w64-x86_64-ninja
+  - pacman -S --noconfirm mingw-w64-x86_64-clang       
+  - pacman -S --noconfirm mingw-w64-x86_64-icu         
+  - pacman -S --noconfirm mingw-w64-x86_64-libxml2     
+  - pacman -S --noconfirm mingw-w64-x86_64-wineditline 
+  - pacman -S --noconfirm mingw-w64-x86_64-winpthreads 
+  - pacman -S --noconfirm mingw-w64-x86_64-pkg-config  
+  - pacman -S --noconfirm mingw-w64-x86_64-dlfcn       
+  - pacman -S --noconfirm python                       
+  - pacman -S --noconfirm python2                      
+  
+  # Patch GCC header
+  # __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/pull/1833)
+  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
+  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
+  
+  # Download Swift compiler
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
+  - cd %WORK_DIR%/build/NinjaMinGW
+  - wget -q -O llvm_lib.tar.gz https://ci.appveyor.com/api/projects/tinysun212/test-repo-1/artifacts/swift.zip
+  - 7z x swift.zip
+  
+  # Download Foundation source
+  - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
+  - cd %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-4.0.3+mingw.20180102 & cd ..
+ 
+build_script:
+  # Build foundation
+  - cd %WORK_DIR%/swift-corelibs-foundation
+  - SET SWIFTC=/c/Work/swift_msvc/build/NinjaMinGW/swift/bin/swiftc 
+  - SET CLANG=/c/Work/swift_msvc/build/NinjaMinGW/llvm/bin/clang 
+  - SET SWIFT=/c/Work/swift_msvc/build/NinjaMinGW/swift/bin/swift 
+  - SET SDKROOT=/c/Work/swift_msvc/build/NinjaMinGW/swift 
+  #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
+  - SET BUILD_DIR=Build
+  - SET DSTROOT=/
+  - SET PREFIX=/usr/
+  - python ./configure Release -DXCTEST_BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/xctest-mingw-x86_64
+  - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
+  - mklink /d bld_co Build\Foundation\CoreFoundation
+  - mklink /d bld_found Build\Foundation\Foundation
+  - sed -e "/partials =/s#Build/Foundation/Foundation/#bld_found/#g" -e "/^build.Build.Foundation.libFoundation./{s#Build/Foundation/CoreFoundation/#bld_co/#g;s#Build/Foundation/Foundation/#bld_found/#g}" build.ninja > build_dll.ninja
+  - ninja CompileSources CompileSwiftSources
+  - ninja -f build_dll.ninja
+  
+after_build:
+  - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
+  - c:/msys64/usr/bin/mkdir -p swift/bin
+  - c:/msys64/usr/bin/mkdir -p swift/lib/swift/mingw/x86_64
+  - cp -p libFoundation.dll swift/bin
+  - cp -rp usr/lib/swift/CoreFoundation swift/lib/swift
+  - cp -p libFoundation.dll swift/lib/swift/mingw
+  - cp -p Foundation.swiftdoc Foundation.swiftmodule swift/lib/swift/mingw/x86_64
+  - 7z a swift_foundation.zip swift
+  - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
+
+test_script:
+  - 'echo skip test'
+  
+artifacts:
+  - path: swift_foundation.zip
+    name: SWIFT FOUNDATION
