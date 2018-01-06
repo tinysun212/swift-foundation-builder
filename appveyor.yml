@@ -15,7 +15,7 @@ install:
   - SET WORK_DIR=c:/projects/swift
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%
   - cd %WORK_DIR%
-  - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/swift/bin 
+  - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/swift/bin;%WORK_DIR%/build/NinjaMinGW/swift/lib/swift/mingw 
  
   # Install packages
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
