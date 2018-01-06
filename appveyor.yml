@@ -70,21 +70,17 @@ build_script:
   - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
   - SET SDKROOT=
-  # FIXEM: Workaround for ninja to work. We should these commands to only one command 'ninja'.
-  - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
-  - mklink /d BFC Build\Foundation\CoreFoundation
-  - mklink /d BFF Build\Foundation\Foundation
-  - sed -e "/partials =/s;Build/Foundation/Foundation/;BFF/;g" 
-        -e "/build Build\/Foundation\/libFoundation./s;Build/Foundation/CoreFoundation/;BFC/;g"
-        -e "/build Build\/Foundation\/libFoundation./s;Build/Foundation/Foundation/;BFF/;g"
-        build.ninja > build_dll.ninja
-  # ;s;Build/Foundation/CoreFoundation/;BFC/;g}
-  - grep "partials =" build_dll.ninja
-  - grep "libFoundation.a" build_dll.ninja
-  # 
-  - ninja CompileSources CompileSwiftSources
-  - find Build -name *.d | xargs rm
-  - ninja -f build_dll.ninja
+  # FIXME: Workaround for ninja to work. We should these commands to only one command 'ninja'.
+  - MKDIR Build\Foundation\CoreFoundation
+  - MKDIR Build\Foundation\Foundation
+  - MKLINK /d BFC Build\Foundation\CoreFoundation
+  - MKLINK /d BFF Build\Foundation\Foundation
+  - sed -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
+        -e "s;Build/Foundation/Foundation/;BFF/;g" 
+        build.ninja > build_short.ninja 
+  - ninja -f build_short.ninja
+  # You will need this clean-up command when retry ninja in your dev environment.
+  # find Build -name *.d | xargs rm
   
 after_build:
   - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
