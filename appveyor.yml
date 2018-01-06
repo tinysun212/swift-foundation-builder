@@ -60,13 +60,17 @@ build_script:
   - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/swift/bin/swiftc 
   - SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
   - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/swift/bin/swift 
-  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/swift 
+  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/swift
+  # FIXME: Move the build directory into NinjaMinGW
   #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
   - SET BUILD_DIR=Build
   - SET DSTROOT=/
   - SET PREFIX=/usr/
   - SET MSYSTEM=MINGW64
   - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/xctest-mingw-x86_64
+  # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
+  - SET SDKROOT=
+  # FIXEM: Workaround for ninja to work. We should these commands to only one command 'ninja'.
   - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
   - mklink /d bld_co Build\Foundation\CoreFoundation
   - mklink /d bld_found Build\Foundation\Foundation
