@@ -58,7 +58,7 @@ build_script:
   - SET BUILD_DIR=Build
   - SET DSTROOT=/
   - SET PREFIX=/usr/
-  - python3 ./configure Release -DXCTEST_BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/xctest-mingw-x86_64
+  - python ./configure --target=x86_64-windows-gnu Release -DXCTEST_BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/xctest-mingw-x86_64
   - c:/msys64/usr/bin/mkdir -p Build/Foundation/CoreFoundation Build/Foundation/Foundation
   - mklink /d bld_co Build\Foundation\CoreFoundation
   - mklink /d bld_found Build\Foundation\Foundation
