@@ -76,7 +76,7 @@ build_script:
   - mklink /d BFF Build\Foundation\Foundation
   - sed -e "/partials =/s;Build/Foundation/Foundation/;BFF/;g" -e "/^build.Build.Foundation.libFoundation./s;Build/Foundation/CoreFoundation/;BFC/;g" build.ninja > build_dll.ninja
   # ;s;Build/Foundation/Foundation/;BFF/;g}
-  - grep "/partials =" build_dll.ninja
+  - grep "partials =" build_dll.ninja
   - grep "libFoundation.a" build_dll.ninja
   # 
   - ninja CompileSources CompileSwiftSources
