@@ -13,6 +13,7 @@ install:
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET MINGW64_DIR=c:/msys64/mingw64
   - SET WORK_DIR=c:/projects/swift
+  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%
   - cd %WORK_DIR%
   - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/swift/bin 
  
