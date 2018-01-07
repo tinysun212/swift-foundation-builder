@@ -37,10 +37,10 @@ install:
   
   # Download swift-clang compiler
   #   Load llvm/clang lib
-  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
-  - cd %WORK_DIR%/build/NinjaMinGW/llvm
-  - wget -q https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/swift_llvm_bin.tar.gz
-  - tar zxf swift_llvm_bin.tar.gz
+  #- c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
+  #- cd %WORK_DIR%/build/NinjaMinGW/llvm
+  #- wget -q https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/swift_llvm_bin.tar.gz
+  #- tar zxf swift_llvm_bin.tar.gz
  
   # Download Swift compiler
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
@@ -58,7 +58,8 @@ build_script:
   # Build foundation
   - cd %WORK_DIR%/swift-corelibs-foundation
   - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/swift/bin/swiftc 
-  - SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
+  #- SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
+  - SET CLANG=%MINGW64_DIR%/bin/clang
   - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/swift/bin/swift 
   - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/swift
   # FIXME: Move the build directory into NinjaMinGW
