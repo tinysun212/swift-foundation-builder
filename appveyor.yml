@@ -20,7 +20,9 @@ install:
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
   - pacman -S --noconfirm mingw-w64-x86_64-clang       
-  - pacman -S --noconfirm mingw-w64-x86_64-icu         
+  #- pacman -S --noconfirm mingw-w64-x86_64-icu         
+  - wget -q http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz
+  - pacman -U --noconfirm mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz         
   - pacman -S --noconfirm mingw-w64-x86_64-libxml2     
   - pacman -S --noconfirm mingw-w64-x86_64-wineditline 
   - pacman -S --noconfirm mingw-w64-x86_64-winpthreads 
@@ -70,15 +72,15 @@ build_script:
   - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
   - SET SDKROOT=
-  # FIXME: Workaround for ninja to work. We should these commands to only one command 'ninja'.
+  # FIXME: Workaround for ninja to work. We should remove these commands - mkdir, mklink, sed.
   - MKDIR Build\Foundation\CoreFoundation
   - MKDIR Build\Foundation\Foundation
   - MKLINK /d BFC Build\Foundation\CoreFoundation
   - MKLINK /d BFF Build\Foundation\Foundation
-  - sed -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
+  - sed -i -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
         -e "s;Build/Foundation/Foundation/;BFF/;g" 
-        build.ninja > build_short.ninja 
-  - ninja -f build_short.ninja
+        build.ninja 
+  - ninja
   # You will need this clean-up command when retry ninja in your dev environment.
   # find Build -name *.d | xargs rm
   
