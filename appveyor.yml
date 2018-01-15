@@ -52,6 +52,8 @@ install:
   - 7z x swift.zip
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
+  # Setup swift compiler environment
+  - MKLINK /d mingw64 c:\msys64\mingw64
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
@@ -91,7 +93,8 @@ after_build:
   - c:/msys64/usr/bin/mkdir -p usr/bin
   - c:/msys64/usr/bin/mkdir -p usr/lib/swift/mingw/x86_64
   - cp -p libFoundation.dll usr/bin
-  - cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
+  # CoreFoundation headers are already there.
+  #- cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
   - cp -p libFoundation.dll usr/lib/swift/mingw
   - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/mingw/x86_64
   - 7z a swift_foundation.zip usr
