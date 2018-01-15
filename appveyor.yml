@@ -50,8 +50,8 @@ install:
   - cd %WORK_DIR%/build/NinjaMinGW
   - wget -q https://ci.appveyor.com/api/projects/tinysun212/test-repo-1/artifacts/swift.zip
   - 7z x swift.zip
-  - cp -p swift/bin/swift.exe swift/bin/swiftc.exe
-  - cp -p swift/bin/swift.exe swift/bin/swift-autolink-extract.exe
+  - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
+  - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
@@ -60,11 +60,11 @@ install:
 build_script:
   # Build foundation
   - cd %WORK_DIR%/swift-corelibs-foundation
-  - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/swift/bin/swiftc 
+  - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc 
   #- SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
   - SET CLANG=%MINGW64_DIR%/bin/clang
-  - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/swift/bin/swift 
-  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/swift
+  - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/usr/bin/swift 
+  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/usr
   # FIXME: Move the build directory into NinjaMinGW
   #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
   - SET BUILD_DIR=Build
@@ -88,13 +88,13 @@ build_script:
   
 after_build:
   - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
-  - c:/msys64/usr/bin/mkdir -p swift/bin
-  - c:/msys64/usr/bin/mkdir -p swift/lib/swift/mingw/x86_64
-  - cp -p libFoundation.dll swift/bin
-  - cp -rp usr/lib/swift/CoreFoundation swift/lib/swift
-  - cp -p libFoundation.dll swift/lib/swift/mingw
-  - cp -p Foundation.swiftdoc Foundation.swiftmodule swift/lib/swift/mingw/x86_64
-  - 7z a swift_foundation.zip swift
+  - c:/msys64/usr/bin/mkdir -p usr/bin
+  - c:/msys64/usr/bin/mkdir -p usr/lib/swift/mingw/x86_64
+  - cp -p libFoundation.dll usr/bin
+  - cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
+  - cp -p libFoundation.dll usr/lib/swift/mingw
+  - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/mingw/x86_64
+  - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
 
 test_script:
