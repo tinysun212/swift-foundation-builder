@@ -37,13 +37,6 @@ install:
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
   
-  # Download swift-clang compiler
-  #   Load llvm/clang lib
-  #- c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/llvm
-  #- cd %WORK_DIR%/build/NinjaMinGW/llvm
-  #- wget -q https://ci.appveyor.com/api/projects/tinysun212/llvm-builder/artifacts/swift_llvm_bin.tar.gz
-  #- tar zxf swift_llvm_bin.tar.gz
- 
   # Download Swift compiler
   - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
   - cd %WORK_DIR%/build/NinjaMinGW
@@ -57,7 +50,11 @@ install:
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
   - cd %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
- 
+
+  # Download XCTest source
+  - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR%/swift-corelibs-xctest
+  - cd %WORK_DIR%/swift-corelibs-xctest & git checkout -qf swift-windows-4.0-branch & cd ..
+
 build_script:
   # Build foundation
   - cd %WORK_DIR%/swift-corelibs-foundation
@@ -87,7 +84,22 @@ build_script:
   # You will need this clean-up command when retry ninja in your dev environment.
   # find Build -name *.d | xargs rm
   
+  # Build XCTest
+  # 1) Install Foundation
+  - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
+  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/bin
+  - cp -rp usr/lib/swift/CoreFoundation %WORK_DIR%/build/NinjaMinGW/usr/lib/swift
+  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
+  - cp -p Foundation.swiftdoc Foundation.swiftmodule %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64
+  # 2) Compile XCTest
+  - cd %WORK_DIR%/swift-corelibs-xctest
+  - python3 build_script.py --swiftc %WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc
+    --foundation-build-dir ../swift-corelibs-foundation --release
+    --module-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64 
+    --library-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
+  
 after_build:
+  # Copy Foundation
   - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
   - c:/msys64/usr/bin/mkdir -p usr/bin
   - c:/msys64/usr/bin/mkdir -p usr/lib/swift/mingw/x86_64
@@ -96,6 +108,11 @@ after_build:
   #- cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
   - cp -p libFoundation.dll usr/lib/swift/mingw
   - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/mingw/x86_64
+  # Copy XCTest
+  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/bin
+  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/lib/swift/mingw
+  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64/XCTest.swift* usr/lib/swift/mingw/x86_64
+  # Archiving
   - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
 
