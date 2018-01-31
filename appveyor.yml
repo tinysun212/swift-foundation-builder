@@ -30,8 +30,7 @@ install:
   #- pacman -S --noconfirm mingw-w64-x86_64-dlfcn
   - wget -q http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-dlfcn-1.0.0-2-any.pkg.tar.xz
   - pacman -U --noconfirm mingw-w64-x86_64-dlfcn-1.0.0-2-any.pkg.tar.xz         
-  - pacman -S --noconfirm python                       
-  - pacman -S --noconfirm python2                      
+  - pacman -S --noconfirm mingw-w64-x86_64-python3
   
   # Patch GCC header
   # __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/pull/1833)
@@ -73,7 +72,7 @@ build_script:
   - SET DSTROOT=/
   - SET PREFIX=/usr/
   - SET MSYSTEM=MINGW64
-  - c:/msys64//usr/bin/python ./configure Release -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
+  - python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
   - SET SDKROOT=
   # FIXME: Workaround for ninja to work. We should remove these commands - mkdir, mklink, sed.
