@@ -37,7 +37,7 @@ install:
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
   
   # Download Swift compiler
-  - MKDIR %WORK_DIR%\build\NinjaMinGW\swift
+  - MKDIR build\NinjaMinGW
   - CD %WORK_DIR%/build/NinjaMinGW
   - wget -q https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip
   - 7z x swift.zip
