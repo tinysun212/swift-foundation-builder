@@ -17,9 +17,12 @@ install:
   - uname -a
   
   # Install packages
+  # First command is, sync, fresh package databases, upgrade installed pckages, quiet.
+  - pacman -Syuq --noconfirm 
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
   - pacman -S --noconfirm mingw-w64-x86_64-ninja
-  - pacman -S --noconfirm mingw-w64-x86_64-clang       
+  - pacman -S --noconfirm mingw-w64-x86_64-clang
+  - pacman -S --noconfirm mingw-w64-x86_64-z3
   #- pacman -S --noconfirm mingw-w64-x86_64-icu         
   - wget -q http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz
   - pacman -U --noconfirm mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz         
