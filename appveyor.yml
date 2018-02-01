@@ -49,8 +49,7 @@ install:
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
   # Setup swift compiler environment
-  #- MKLINK /D mingw64 c:\msys64\mingw64
-  - ln -s c:/msys64/mingw64 mingw64
+  - MKLINK /D mingw64 c:\msys64\mingw64
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
@@ -77,7 +76,7 @@ build_script:
   - SET PREFIX=/usr/
   - SET MSYSTEM=MINGW64
   # The environment variable SDKROOT affects to the Swift compiler. We use this only for this Foundation configure.
-  - CMD /C "SET SDKROOT=%SWIFT_SDK% & CALL 
+  - CMD /C "SET SDKROOT=%SWIFT_SDK%& CALL 
     python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
     "
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
@@ -110,11 +109,6 @@ build_script:
     -I C:/projects/build/NinjaMinGW/usr/lib/swift  
     C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/ArgumentParser.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/ObjectWrapper.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/PerformanceMeter.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/PrintObserver.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/TestFiltering.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/TestListing.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/WallClockTimeMetric.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/XCPredicateExpectation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/XCTestCaseSuite.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Private/XCTestInternalObservation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCAbstractTest.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTAssert.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestCase+Performance.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestCase.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestCaseRun.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestErrors.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestMain.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestObservation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestObservationCenter.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestRun.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestSuite.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/XCTestSuiteRun.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCNotificationExpectationHandler.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCPredicateExpectationHandler.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCTestCase+Asynchronous.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCTestCase+NotificationExpectation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCTestCase+PredicateExpectation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCTestExpectation.swift C:/projects/swift-corelibs-xctest/Sources/XCTest/Public/Asynchronous/XCWaitCompletionHandler.swift -o XCTest.o
   - C:/projects/build/NinjaMinGW/usr/bin/swiftc -emit-library XCTest.o -lswiftCore -lFoundation -lm -o libXCTest.dll -v
-  #- C:\projects\build\NinjaMinGW\usr\bin\swift-autolink-extract.exe XCTest.o -o XCTest.autolink
-  #- type XCTest.autolink
-  #- clang++ -shared -Xlinker -rpath -Xlinker C:\projects\build\NinjaMinGW\usr\lib\swift\mingw XCTest.o -lswiftCore -lFoundation -lm 
-  #  -L C:\projects\build\NinjaMinGW\usr\lib\swift\mingw -lswiftCore
-  #  --target=x86_64-w64-windows-gnu @XCTest.autolink -o libXCTest.dll -v
   - cp -p libXCTest.dll C:/projects/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll
   - cp -p XCTest.swiftmodule C:/projects/build/NinjaMinGW/usr/lib/swift/mingw/x86_64/XCTest.swiftmodule
   - cp -p XCTest.swiftdoc C:/projects/build/NinjaMinGW/usr/lib/swift/mingw/x86_64/XCTest.swiftdoc
