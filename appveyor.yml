@@ -48,7 +48,8 @@ install:
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
   # Setup swift compiler environment
-  - MKLINK /D mingw64 c:\msys64\mingw64
+  #- MKLINK /D mingw64 c:\msys64\mingw64
+  - ln -s c:/msys64/mingw64 mingw64
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
