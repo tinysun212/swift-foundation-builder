@@ -7,14 +7,13 @@ environment:
 
 install:
   # Set Environment
-  - 'echo End intall at: & time /t'
   - SET PATH_ORIGINAL=%PATH%
   - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
   - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
   - SET MINGW64_DIR=c:/msys64/mingw64
   - SET WORK_DIR=c:/projects
-  - cd %WORK_DIR%
-  - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/swift/bin;%WORK_DIR%/build/NinjaMinGW/swift/lib/swift/mingw 
+  - CD %WORK_DIR%
+  - SET PATH=%PATH%;%WORK_DIR%/build/NinjaMinGW/usr/bin;%WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw 
  
   # Install packages
   - pacman -S --noconfirm mingw-w64-x86_64-cmake
@@ -38,26 +37,26 @@ install:
   - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
   
   # Download Swift compiler
-  - c:/msys64/usr/bin/mkdir -p %WORK_DIR%/build/NinjaMinGW/swift
-  - cd %WORK_DIR%/build/NinjaMinGW
+  - MKDIR %WORK_DIR%\build\NinjaMinGW\swift
+  - CD %WORK_DIR%/build/NinjaMinGW
   - wget -q https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip
   - 7z x swift.zip
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
   # Setup swift compiler environment
-  - MKLINK /d mingw64 c:\msys64\mingw64
+  - MKLINK /D mingw64 c:\msys64\mingw64
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
-  - cd %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
+  - CD %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
 
   # Download XCTest source
   - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR%/swift-corelibs-xctest
-  - cd %WORK_DIR%/swift-corelibs-xctest & git checkout -qf swift-windows-4.0-branch & cd ..
+  - CD %WORK_DIR%/swift-corelibs-xctest & git checkout -qf swift-windows-4.0-branch & cd ..
 
 build_script:
   # Build foundation
-  - cd %WORK_DIR%/swift-corelibs-foundation
+  - CD %WORK_DIR%/swift-corelibs-foundation
   - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc 
   #- SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
   - SET CLANG=%MINGW64_DIR%/bin/clang
@@ -75,24 +74,24 @@ build_script:
   # FIXME: Workaround for ninja to work. We should remove these commands - mkdir, mklink, sed.
   - MKDIR Build\Foundation\CoreFoundation
   - MKDIR Build\Foundation\Foundation
-  - MKLINK /d BFC Build\Foundation\CoreFoundation
-  - MKLINK /d BFF Build\Foundation\Foundation
+  - MKLINK /D BFC Build\Foundation\CoreFoundation
+  - MKLINK /D BFF Build\Foundation\Foundation
   - sed -i -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
         -e "s;Build/Foundation/Foundation/;BFF/;g" 
         build.ninja 
   - ninja
   # You will need this clean-up command when retry ninja in your dev environment.
-  # find Build -name *.d | xargs rm
+  # "find Build -name *.d | xargs rm"
   
   # Build XCTest
   # 1) Install Foundation
-  - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
+  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
   - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/bin
   - cp -rp usr/lib/swift/CoreFoundation %WORK_DIR%/build/NinjaMinGW/usr/lib/swift
   - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
   - cp -p Foundation.swiftdoc Foundation.swiftmodule %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64
   # 2) Compile XCTest
-  - cd %WORK_DIR%/swift-corelibs-xctest
+  - CD %WORK_DIR%/swift-corelibs-xctest
   - python3 build_script.py --swiftc %WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc
     --foundation-build-dir ../swift-corelibs-foundation --release
     --module-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64 
@@ -100,9 +99,9 @@ build_script:
   
 after_build:
   # Copy Foundation
-  - cd %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
-  - c:/msys64/usr/bin/mkdir -p usr/bin
-  - c:/msys64/usr/bin/mkdir -p usr/lib/swift/mingw/x86_64
+  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
+  - MKDIR usr\bin
+  - MKDIR usr\lib\swift\mingw\x86_64
   - cp -p libFoundation.dll usr/bin
   # CoreFoundation headers are already there.
   #- cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
