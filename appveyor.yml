@@ -68,7 +68,7 @@ build_script:
   - SET CLANG=%MINGW64_DIR%/bin/clang
   - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/usr/bin/swift 
   - ECHO %SDKROOT%
-  - SET SDKROOT=%WORK_DIR%/build/NinjaMinGW/usr
+  - SET SWIFT_SDK=%WORK_DIR%/build/NinjaMinGW/usr
   - ECHO %SDKROOT%
   # FIXME: TODO: Move the build directory into NinjaMinGW
   #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
@@ -76,7 +76,10 @@ build_script:
   - SET DSTROOT=/
   - SET PREFIX=/usr/
   - SET MSYSTEM=MINGW64
-  - python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
+  # The environment variable SDKROOT affects to the Swift compiler. We use this only for this Foundation configure.
+  - CMD /C "SET SDKROOT=%SWIFT_SDK% & CALL 
+    python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64
+    "
   # Clear the environment variable SDKROOT because it affects to the Swift compiler. 
   - SET SDKROOT=&
   - ECHO %SDKROOT%
