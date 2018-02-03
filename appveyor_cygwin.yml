@@ -45,7 +45,7 @@ install:
   - cp -p swift-cygwin-x86_64/bin/swift.exe swift-cygwin-x86_64/bin/swiftc.exe
   - cp -p swift-cygwin-x86_64/bin/swift.exe swift-cygwin-x86_64/bin/swift-autolink-extract.exe
   # Missing libraries
-  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swift/x86_64
+  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/x86_64
   - cp -p libswiftCore.dll.a libswiftNewlib.dll.a libswiftRemoteMirror.dll.a libswiftSwiftOnoneSupport.dll.a ..
   
   # Download Foundation source
