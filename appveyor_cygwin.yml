@@ -25,10 +25,11 @@ install:
     -P pkg-config
     -P python
     -P wget
+    -P libcurl-devel
+    -P libedit-devel
     -P libiconv-devel
     -P libicu-devel
     -P libxml2-devel
-    -P libedit-devel
     -P python
     -P gcc
     -P g++
