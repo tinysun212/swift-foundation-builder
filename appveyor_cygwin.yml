@@ -77,6 +77,7 @@ build_script:
   - ninja
 
   # Build XCTest
+  - CD %WORK_DIR%/xctest-cygwin-x86_64
   - sh -c "python build_script.py
     --swiftc=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc 
     --build-dir=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64 
