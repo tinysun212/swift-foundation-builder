@@ -85,30 +85,23 @@ build_script:
   
 after_build:
   # Copy Foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
-  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/bin
-  - cp -rp usr/lib/swift/CoreFoundation %WORK_DIR%/build/NinjaMinGW/usr/lib/swift
-  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
-  - cp -p Foundation.swiftdoc Foundation.swiftmodule %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64
-  # Copy Foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
+  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/foundation-cygwin-x86_64/Foundation
   - MKDIR usr\bin
-  - MKDIR usr\lib\swift\mingw\x86_64
+  - MKDIR usr\lib\swift\cygwin\x86_64
+  # CoreFoundation header directory (usr\lib\swift\CoreFoundation) is already there.
   - cp -p libFoundation.dll usr/bin
-  # CoreFoundation headers are already there.
-  #- cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
-  - cp -p libFoundation.dll usr/lib/swift/mingw
-  - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/mingw/x86_64
+  - cp -p libFoundation.dll usr/lib/swift/cygwin
+  - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/cygwin/x86_64
   # Copy XCTest
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/bin
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/lib/swift/mingw
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64/XCTest.swift* usr/lib/swift/mingw/x86_64
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/libXCTest.dll usr/bin
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/libXCTest.dll usr/lib/swift/cygwin
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/XCTest.swift* usr/lib/swift/cygwin/x86_64
   # Archiving
   - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
 
 test_script:
-  - 'echo skip test'
+  - ECHO skip test
   
 artifacts:
   - path: swift_foundation.zip
