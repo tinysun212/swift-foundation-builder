@@ -49,11 +49,11 @@ install:
   - cp -p libswiftCore.dll.a libswiftNewlib.dll.a libswiftRemoteMirror.dll.a libswiftSwiftOnoneSupport.dll.a ..
   
   # Download Foundation source
-  - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
+  - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR_IN_CYGWIN%/swift-corelibs-foundation
   - CD %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
 
   # Download XCTest source
-  - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR%/swift-corelibs-xctest
+  - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR_IN_CYGWIN%/swift-corelibs-xctest
   - CD %WORK_DIR%/swift-corelibs-xctest & git checkout -qf swift-windows-4.0-branch & cd ..
 
 build_script:
