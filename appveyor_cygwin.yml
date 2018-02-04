@@ -36,6 +36,11 @@ install:
   - wget -q http://cygwin.mirror.constant.com/x86_64/release/binutils/binutils-2.25-4.tar.xz
   - tar -x -C / -f binutils-2.25-4.tar.xz
   
+  # Patch GCC header
+  # Foundation uses clang option '-flocks' which uses internal keyword '__block'
+  # We should remove __block from the prototype in sys/unistd.h
+  - sed -i "s;__block, int __edflag;, int __edflag;" /usr/include/sys/unistd.h
+  
   # Download Swift compiler
   - MKDIR build\Ninja-ReleaseAssert
   - CD %WORK_DIR%/build/Ninja-ReleaseAssert
