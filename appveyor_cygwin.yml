@@ -29,7 +29,7 @@ install:
     -P libedit-devel
     -P libiconv-devel
     -P libicu-devel
-    -P libsqlite3_0
+    -P libsqlite3-devel
     -P libxml2-devel
     -P python
     -P gcc
