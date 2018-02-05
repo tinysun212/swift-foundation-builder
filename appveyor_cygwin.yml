@@ -112,6 +112,8 @@ after_build:
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/libXCTest.dll usr/bin
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/libXCTest.dll usr/lib/swift/cygwin
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/XCTest.swift* usr/lib/swift/cygwin/x86_64
+  # Copy llbuild
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool.exe usr/bin
   # Archiving
   - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
