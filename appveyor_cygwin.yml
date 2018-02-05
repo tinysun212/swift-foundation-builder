@@ -96,6 +96,7 @@ build_script:
     -DFILECHECK_EXECUTABLE:PATH=FileCheck -DCMAKE_BUILD_TYPE:STRING=Release -DLLVM_ENABLE_ASSERTIONS:BOOL=TRUE 
     -DLLBUILD_SUPPORT_BINDINGS:= 
     %WORK_DIR_IN_CYGWIN%/llbuild
+  - ninja
   
 after_build:
   # Copy Foundation
