@@ -67,6 +67,10 @@ install:
   - git clone https://github.com/tinysun212/swift-llbuild.git %WORK_DIR_IN_CYGWIN%/llbuild
   - CD %WORK_DIR%/llbuild & git checkout -qf swift-windows-4.0-branch & cd ..
 
+  # Download SwiftPM source
+  - git clone https://github.com/tinysun212/swift-package-manager.git %WORK_DIR_IN_CYGWIN%/swiftpm
+  - CD %WORK_DIR%/swiftpm & git checkout -qf swift-windows-4.0-branch & cd ..
+
 build_script:
   # Build Foundation
   - CD %WORK_DIR%/swift-corelibs-foundation
@@ -98,7 +102,13 @@ build_script:
     -DLLBUILD_SUPPORT_BINDINGS:= 
     %WORK_DIR_IN_CYGWIN%/llbuild
   - ninja
-  
+
+  # Build SwiftPM
+  - /cygdrive/c/Work/swift_msvc/swiftpm/Utilities/bootstrap --release 
+    --swiftc=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc
+    --sbt=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool
+    --build=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64
+
 after_build:
   # Copy Foundation
   - CD %WORK_DIR%/build/Ninja-ReleaseAssert/foundation-cygwin-x86_64/Foundation
