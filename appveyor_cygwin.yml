@@ -70,7 +70,7 @@ install:
   # Download SwiftPM source
   - git clone https://github.com/tinysun212/swift-package-manager.git %WORK_DIR_IN_CYGWIN%/swiftpm
   #- CD %WORK_DIR%/swiftpm & git checkout -qf swift-windows-4.0-branch & cd ..
-  - CD %WORK_DIR%/swiftpm & git checkout -qf test-br h & cd ..
+  - CD %WORK_DIR%/swiftpm & git checkout -qf test-br & cd ..
 
 build_script:
   # Build Foundation
