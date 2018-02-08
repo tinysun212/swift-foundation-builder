@@ -104,10 +104,10 @@ build_script:
   - ninja
 
   # Build SwiftPM
-  - /cygdrive/c/Work/swift_msvc/swiftpm/Utilities/bootstrap --release 
-    --swiftc=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc
-    --sbt=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool
-    --build=/cygdrive/c/Work/swift_msvc/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64
+  - env /cygdrive/c/projects/swiftpm/Utilities/bootstrap --release 
+    --swiftc=/cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc
+    --sbt=/cygdrive/c/projects/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool
+    --build=/cygdrive/c/projects/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64
 
 after_build:
   # Copy Foundation
