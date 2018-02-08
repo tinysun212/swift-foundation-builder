@@ -105,6 +105,13 @@ build_script:
   - ninja
 
   # Build SwiftPM
+  # Install Foundation to use now
+  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/foundation-cygwin-x86_64/Foundation
+  - cp -rp CoreFoundation /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift
+  - cp -p libFoundation.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin
+  - cp -p libFoundation.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin
+  - cp -p Foundation.swiftdoc Foundation.swiftmodule /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin/x86_64
+  - CD %WORK_DIR%/swiftpm
   - env /cygdrive/c/projects/swiftpm/Utilities/bootstrap --release 
     --swiftc=/cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc
     --sbt=/cygdrive/c/projects/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool
