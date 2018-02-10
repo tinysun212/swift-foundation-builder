@@ -110,6 +110,12 @@ build_script:
   - cp -p libFoundation.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin
   - cp -p libFoundation.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin
   - cp -p Foundation.swiftdoc Foundation.swiftmodule /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin/x86_64
+  # Install XCTest to use now
+  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64
+  - cp -p libXCTest.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin
+  - cp -p libXCTest.dll /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin
+  - cp -p XCTest.swiftdoc XCTest.swiftmodule /cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin/x86_64
+  # Now build SwiftPM
   - CD %WORK_DIR%/swiftpm
   - env /cygdrive/c/projects/swiftpm/Utilities/bootstrap --release 
     --swiftc=/cygdrive/c/projects/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc
