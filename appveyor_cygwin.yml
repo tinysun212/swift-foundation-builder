@@ -143,6 +143,7 @@ after_build:
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-package usr/bin
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-run usr/bin
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-test usr/bin
+  - cp -rp %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/.bootstrap/lib/swift/pm usr/lib/swift
   # Archiving
   - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
