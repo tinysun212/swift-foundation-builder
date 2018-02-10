@@ -69,8 +69,8 @@ install:
 
   # Download SwiftPM source
   - git clone https://github.com/tinysun212/swift-package-manager.git %WORK_DIR_IN_CYGWIN%/swiftpm
-  #- CD %WORK_DIR%/swiftpm & git checkout -qf swift-windows-4.0-branch & cd ..
-  - CD %WORK_DIR%/swiftpm & git checkout -qf test-br2 & cd ..
+  - CD %WORK_DIR%/swiftpm & git checkout -qf swift-windows-4.0-branch & cd ..
+  #- CD %WORK_DIR%/swiftpm & git checkout -qf test-br2 & cd ..
 
 build_script:
   # Build Foundation
@@ -138,6 +138,11 @@ after_build:
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64/XCTest.swift* usr/lib/swift/cygwin/x86_64
   # Copy llbuild
   - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64/bin/swift-build-tool.exe usr/bin
+  # Copy SwiftPM
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-build usr/bin
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-package usr/bin
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-run usr/bin
+  - cp -p %WORK_DIR%/build/Ninja-ReleaseAssert/swiftpm-cygwin-x86_64/x86_64-unknown-cygwin/release/swift-test usr/bin
   # Archiving
   - 7z a swift_foundation.zip usr
   - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
