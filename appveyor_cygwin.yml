@@ -14,6 +14,8 @@ install:
   - SET WORK_DIR_IN_CYGWIN=/cygdrive/c/projects
   - SET PATH=%PATH%;%WORK_DIR%/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin
   - SET CYGWIN64_DIR=/cygdrive/c/cygwin64
+  - SET GIT_TAG_OR_BRANCH=swift-4.0.3+cygwin.20180212
+  #- SET GIT_TAG_OR_BRANCH=swift-windows-4.0-branch
   - CD %WORK_DIR%
   - uname -a
   
@@ -52,25 +54,24 @@ install:
   - cp -p swift-cygwin-x86_64/bin/swift.exe swift-cygwin-x86_64/bin/swiftc.exe
   - cp -p swift-cygwin-x86_64/bin/swift.exe swift-cygwin-x86_64/bin/swift-autolink-extract.exe
   # Missing libraries
-  - CD %WORK_DIR%/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin/x86_64
-  - cp -p libswiftCore.dll.a libswiftNewlib.dll.a libswiftRemoteMirror.dll.a libswiftSwiftOnoneSupport.dll.a ..
+  #- CD %WORK_DIR%/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/lib/swift/cygwin/x86_64
+  #- cp -p libswiftCore.dll.a libswiftNewlib.dll.a libswiftRemoteMirror.dll.a libswiftSwiftOnoneSupport.dll.a ..
   
   # Download Foundation source
   - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR_IN_CYGWIN%/swift-corelibs-foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation & git checkout -qf swift-windows-4.0-branch & cd ..
+  - CD %WORK_DIR%/swift-corelibs-foundation & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
 
   # Download XCTest source
   - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR_IN_CYGWIN%/swift-corelibs-xctest
-  - CD %WORK_DIR%/swift-corelibs-xctest & git checkout -qf swift-windows-4.0-branch & cd ..
+  - CD %WORK_DIR%/swift-corelibs-xctest & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
   
   # Download llbuild source
   - git clone https://github.com/tinysun212/swift-llbuild.git %WORK_DIR_IN_CYGWIN%/llbuild
-  - CD %WORK_DIR%/llbuild & git checkout -qf swift-windows-4.0-branch & cd ..
+  - CD %WORK_DIR%/llbuild & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
 
   # Download SwiftPM source
   - git clone https://github.com/tinysun212/swift-package-manager.git %WORK_DIR_IN_CYGWIN%/swiftpm
-  - CD %WORK_DIR%/swiftpm & git checkout -qf swift-windows-4.0-branch & cd ..
-  #- CD %WORK_DIR%/swiftpm & git checkout -qf test-br2 & cd ..
+  - CD %WORK_DIR%/swiftpm & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
 
 build_script:
   # Build Foundation
