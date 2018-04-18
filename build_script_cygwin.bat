@@ -19,7 +19,7 @@ rem Build XCTest
    --swiftc=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc ^
    --build-dir=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64        ^
    --foundation-build-dir=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/foundation-cygwin-x86_64/Foundation --release"
-    
+
 rem Build llbuild
  MKDIR %WORK_DIR%\build\Ninja-ReleaseAssert\llbuild-cygwin-x86_64
  CD %WORK_DIR%/build/Ninja-ReleaseAssert/llbuild-cygwin-x86_64
