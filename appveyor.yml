@@ -3,125 +3,20 @@ version: 1.0.{build}
 environment:
   matrix:
   - PLATFORM: mingw64
+  - PLATFORM: cygwin64
 
 install:
-  # Set Environment
-  - SET PATH_ORIGINAL=%PATH%
-  - SET "PATH_MINGW64=c:\msys64\mingw64\bin;c:\msys64\usr\bin"
-  - SET PATH=%PATH_MINGW64%;%PATH_ORIGINAL%
-  - SET MINGW64_DIR=c:/msys64/mingw64
-  - SET WORK_DIR=c:/projects
-  - SET GIT_TAG_OR_BRANCH=swift-4.0.3+mingw.20180212
-  - SET TAG_OR_BRANCH_IN_FOLDER=swift-4.0.3-mingw.20180212  
-  #- SET GIT_TAG_OR_BRANCH=swift-windows-4.0-branch  
-  - CD %WORK_DIR%
+  - call %APPVEYOR_BUILD_FOLDER%\install.bat
   
-  # Install packages
-  - pacman -S --noconfirm mingw-w64-x86_64-cmake
-  - pacman -S --noconfirm mingw-w64-x86_64-ninja
-  - pacman -S --noconfirm mingw-w64-x86_64-clang
-  # For build on PC, clang depends on z3, but z3 isn't automatically installed.
-  #- pacman -S --noconfirm mingw-w64-x86_64-z3
-  - pacman -S --noconfirm mingw-w64-x86_64-icu         
-  #- wget -q http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz
-  #- pacman -U --noconfirm mingw-w64-x86_64-icu-57.1-2-any.pkg.tar.xz         
-  - pacman -S --noconfirm mingw-w64-x86_64-libxml2     
-  - pacman -S --noconfirm mingw-w64-x86_64-wineditline 
-  - pacman -S --noconfirm mingw-w64-x86_64-winpthreads 
-  - pacman -S --noconfirm mingw-w64-x86_64-pkg-config  
-  - pacman -S --noconfirm mingw-w64-x86_64-dlfcn
-  #- wget -q http://repo.msys2.org/mingw/x86_64/mingw-w64-x86_64-dlfcn-1.0.0-2-any.pkg.tar.xz
-  #- pacman -U --noconfirm mingw-w64-x86_64-dlfcn-1.0.0-2-any.pkg.tar.xz         
-  - pacman -S --noconfirm mingw-w64-x86_64-python3
-  
-  # Patch GCC header
-  # __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/pull/1833)
-  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/type_traits
-  - sed -i "s;defined(_GLIBCXX_USE_FLOAT128)$;defined(_GLIBCXX_USE_FLOAT128) \&\& !defined\(__clang__\);" %MINGW64_DIR%/include/c++/*/bits/std_abs.h
-  
-  # Download Swift compiler
-  - MKDIR build\NinjaMinGW
-  - CD %WORK_DIR%/build/NinjaMinGW
-  - "SET JOB_NAME=Environment: PLATFORM=mingw64"
-  - wget -d -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job="%JOB_NAME%"
-  - 7z x swift.zip
-  - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
-  - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
-  # Setup swift compiler environment
-  - MKLINK /D mingw64 c:\msys64\mingw64
-  
-  # Download Foundation source
-  - git clone https://github.com/tinysun212/swift-corelibs-foundation.git %WORK_DIR%/swift-corelibs-foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
-
-  # Download XCTest source
-  - git clone https://github.com/tinysun212/swift-corelibs-xctest.git %WORK_DIR%/swift-corelibs-xctest
-  - CD %WORK_DIR%/swift-corelibs-xctest & git checkout -qf %GIT_TAG_OR_BRANCH% & cd ..
-
 build_script:
-  # Build foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation
-  - SET SWIFTC=%WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc 
-  #- SET CLANG=%WORK_DIR%/build/NinjaMinGW/llvm/bin/clang 
-  - SET CLANG=%MINGW64_DIR%/bin/clang
-  - SET SWIFT=%WORK_DIR%/build/NinjaMinGW/usr/bin/swift 
-  - SET SWIFT_SDK=%WORK_DIR%/build/NinjaMinGW/usr
-  # FIXME: TODO: Move the build directory into NinjaMinGW
-  #- SET BUILD_DIR=/c/Work/swift_msvc/build/NinjaMinGW/foundation
-  - SET BUILD_DIR=Build
-  - SET DSTROOT=/
-  - SET PREFIX=/usr/
-  - SET MSYSTEM=MINGW64
-  # The environment variable SDKROOT affects to the Swift compiler. We define this variable in subcommand.
-  - CMD /C "SET SDKROOT=%SWIFT_SDK%& CALL 
-    python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64"
-  # FIXME: Workaround for ninja to work. We should find to remove these commands - MKDIR, MKLINK, sed.
-  - MKDIR Build\Foundation\CoreFoundation
-  - MKDIR Build\Foundation\Foundation
-  - MKLINK /D BFC Build\Foundation\CoreFoundation
-  - MKLINK /D BFF Build\Foundation\Foundation
-  - sed -i -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
-        -e "s;Build/Foundation/Foundation/;BFF/;g" 
-        build.ninja 
-  - ninja
-  # You will need this clean-up command when retry ninja in your dev environment.
-  # "find Build -name *.d | xargs rm"
-  
-  # Build XCTest
-  # 1) Install Foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
-  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/bin
-  - cp -rp usr/lib/swift/CoreFoundation %WORK_DIR%/build/NinjaMinGW/usr/lib/swift
-  - cp -p libFoundation.dll %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
-  - cp -p Foundation.swiftdoc Foundation.swiftmodule %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64
-  # 2) Compile XCTest
-  - CD %WORK_DIR%/swift-corelibs-xctest
-  - python3 build_script.py --swiftc %WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc 
-    --foundation-build-dir %WORK_DIR%/build/NinjaMinGW --release
-    --module-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64 
-    --library-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
-  
+  - call %APPVEYOR_BUILD_FOLDER%\build_script.bat
+
 after_build:
-  # Copy Foundation
-  - CD %WORK_DIR%/swift-corelibs-foundation/Build/Foundation
-  - MKDIR usr\bin
-  - MKDIR usr\lib\swift\mingw\x86_64
-  - cp -p libFoundation.dll usr/bin
-  # CoreFoundation headers are already there.
-  #- cp -rp usr/lib/swift/CoreFoundation usr/lib/swift
-  - cp -p libFoundation.dll usr/lib/swift/mingw
-  - cp -p Foundation.swiftdoc Foundation.swiftmodule usr/lib/swift/mingw/x86_64
-  # Copy XCTest
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/bin
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/libXCTest.dll usr/lib/swift/mingw
-  - cp -p %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64/XCTest.swift* usr/lib/swift/mingw/x86_64
-  # Archiving
-  - 7z a swift_foundation.zip usr
-  - mv swift_foundation.zip %APPVEYOR_BUILD_FOLDER%
+  - call %APPVEYOR_BUILD_FOLDER%\after_build.bat
 
 test_script:
   - 'echo skip test'
   
 artifacts:
-  - path: swift_foundation.zip
-    name: SWIFT FOUNDATION
+  - path: swift.zip
+    name: SWIFT
