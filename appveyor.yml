@@ -42,7 +42,7 @@ install:
   # Download Swift compiler
   - MKDIR build\NinjaMinGW
   - CD %WORK_DIR%/build/NinjaMinGW
-  - wget -d -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job="Environment: PLATFORM=mingw64"
+  - wget -d -O swift.zip "https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job=Environment: PLATFORM=mingw64"
   - 7z x swift.zip
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
