@@ -19,8 +19,8 @@ rem FIXME: Workaround for ninja to work. We should find to remove these commands
  MKDIR Build\Foundation\Foundation
  MKLINK /D BFC Build\Foundation\CoreFoundation
  MKLINK /D BFF Build\Foundation\Foundation
- sed -i -e "s;Build/Foundation/CoreFoundation/;BFC/;g"
-     -e "s;Build/Foundation/Foundation/;BFF/;g" 
+ sed -i -e "s;Build/Foundation/CoreFoundation/;BFC/;g" ^
+     -e "s;Build/Foundation/Foundation/;BFF/;g"        ^
      build.ninja 
  ninja
 rem You will need this clean-up command when retry ninja in your dev environment.
