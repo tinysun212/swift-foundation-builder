@@ -2,8 +2,7 @@ version: 1.0.{build}
 
 environment:
   matrix:
-  - COMPILER: gcc
-    PLATFORM: mingw64
+  - PLATFORM: mingw64
 
 install:
   # Set Environment
@@ -43,8 +42,8 @@ install:
   # Download Swift compiler
   - MKDIR build\NinjaMinGW
   - CD %WORK_DIR%/build/NinjaMinGW
-  - wget -q https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift-mingw.zip
-  - 7z x swift-mingw.zip
+  - wget -q https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job=Environment:%20PLATFORM=mingw64
+  - 7z x swift.zip
   - cp -p usr/bin/swift.exe usr/bin/swiftc.exe
   - cp -p usr/bin/swift.exe usr/bin/swift-autolink-extract.exe
   # Setup swift compiler environment
