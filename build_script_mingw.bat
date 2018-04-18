@@ -12,8 +12,7 @@ rem FIXME: TODO: Move the build directory into NinjaMinGW
  SET PREFIX=/usr/
  SET MSYSTEM=MINGW64
 rem The environment variable SDKROOT affects to the Swift compiler. We define this variable in subcommand.
- CMD /C "SET SDKROOT=%SWIFT_SDK%& CALL 
-    python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64"
+ CMD /C "SET SDKROOT=%SWIFT_SDK%& CALL python3 ./configure Release --target=x86_64-windows-gnu -DXCTEST_BUILD_DIR=%WORK_DIR%/build/NinjaMinGW/xctest-mingw-x86_64"
 rem FIXME: Workaround for ninja to work. We should find to remove these commands - MKDIR, MKLINK, sed.
  MKDIR Build\Foundation\CoreFoundation
  MKDIR Build\Foundation\Foundation
