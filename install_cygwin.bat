@@ -42,7 +42,7 @@ rem Download Swift compiler
  MKDIR build\Ninja-ReleaseAssert
  CD %WORK_DIR%/build/Ninja-ReleaseAssert
  SET JOB_NAME=Environment: PLATFORM=cygwin64
- wget -q -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder-6xb6g/artifacts/swift.zip?job="%JOB_NAME%"
+ wget -q -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job="%JOB_NAME%"
  7z x swift.zip
  MOVE usr swift-cygwin-x86_64
  cp -p swift-cygwin-x86_64/bin/swift.exe swift-cygwin-x86_64/bin/swiftc.exe
