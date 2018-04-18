@@ -18,5 +18,5 @@ test_script:
   - 'echo skip test'
   
 artifacts:
-  - path: swift.zip
-    name: SWIFT
+  - path: swift_foundation.zip
+    name: SWIFT FOUNDATION
