@@ -15,7 +15,7 @@ rem The environment variable SDKROOT affects to the Swift compiler. We define th
 
 rem Build XCTest
  CD %WORK_DIR%/swift-corelibs-xctest
- sh -c "python build_script.py ^
+ sh -c "python build_script.py
    --swiftc=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/swift-cygwin-x86_64/bin/swiftc ^
    --build-dir=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/xctest-cygwin-x86_64        ^
    --foundation-build-dir=$WORK_DIR_IN_CYGWIN/build/Ninja-ReleaseAssert/foundation-cygwin-x86_64/Foundation --release"
