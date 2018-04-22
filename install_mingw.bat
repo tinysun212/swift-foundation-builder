@@ -31,7 +31,7 @@ rem __float128 is undefined in clang (https://github.com/Alexpux/MINGW-packages/
 rem Download Swift compiler
  MKDIR build\NinjaMinGW
  CD %WORK_DIR%/build/NinjaMinGW
- SET JOB_NAME=Environment: PLATFORM=mingw64
+ SET JOB_NAME=Environment: BUILD_TARGET=mingw64
  wget -q -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job="%JOB_NAME%"
  7z x swift.zip
  cp -p usr/bin/swift.exe usr/bin/swiftc.exe
