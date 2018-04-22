@@ -41,7 +41,7 @@ rem We should remove __block from the prototype in sys/unistd.h
 rem Download Swift compiler
  MKDIR build\Ninja-ReleaseAssert
  CD %WORK_DIR%/build/Ninja-ReleaseAssert
- SET JOB_NAME=Environment: PLATFORM=cygwin64
+ SET JOB_NAME=Environment: BUILD_TARGET=cygwin64
  wget -q -O swift.zip https://ci.appveyor.com/api/projects/tinysun212/swift-compiler-builder/artifacts/swift.zip?job="%JOB_NAME%"
  7z x swift.zip
  MOVE usr swift-cygwin-x86_64
