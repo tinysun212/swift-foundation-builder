@@ -36,5 +36,6 @@ rem 2) Compile XCTest
  CD %WORK_DIR%/swift-corelibs-xctest
  python3 build_script.py --swiftc %WORK_DIR%/build/NinjaMinGW/usr/bin/swiftc    ^
    --foundation-build-dir %WORK_DIR%/build/NinjaMinGW --release                 ^
+	 --libdispatch-build-dir %WORK_DIR%/build/NinjaMinGW                             ^
    --module-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw/x86_64 ^
    --library-install-path %WORK_DIR%/build/NinjaMinGW/usr/lib/swift/mingw
